@@ -5,7 +5,7 @@ const Team2Tab = () => {
     <Card size="3">
       <div className="flex min-h-40 items-center justify-center">
         <Text as="p" align="center" color="gray">
-          Here team 2 will implement its functionality.
+          Team 2 builds expenses here, against /api/expenses.
         </Text>
       </div>
     </Card>

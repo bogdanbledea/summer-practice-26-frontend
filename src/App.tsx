@@ -20,9 +20,9 @@ const App = () => {
             data load fresh every time someone switches to their tab. */}
         <Tabs.Root defaultValue="team1">
           <Tabs.List>
-            <Tabs.Trigger value="team1">Team 1</Tabs.Trigger>
-            <Tabs.Trigger value="team2">Team 2</Tabs.Trigger>
-            <Tabs.Trigger value="team3">Team 3</Tabs.Trigger>
+            <Tabs.Trigger value="team1">Tasks</Tabs.Trigger>
+            <Tabs.Trigger value="team2">Expenses</Tabs.Trigger>
+            <Tabs.Trigger value="team3">Message board</Tabs.Trigger>
           </Tabs.List>
 
           <Box pt="4">

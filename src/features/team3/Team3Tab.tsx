@@ -5,7 +5,7 @@ const Team3Tab = () => {
     <Card size="3">
       <div className="flex min-h-40 items-center justify-center">
         <Text as="p" align="center" color="gray">
-          Here team 3 will implement its functionality.
+          Team 3 builds the message board here, against /api/messages.
         </Text>
       </div>
     </Card>
