@@ -1,9 +1,29 @@
-import { Box, Container, Flex, Heading, Tabs, Text } from "@radix-ui/themes";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  Tabs,
+  Text,
+} from "@radix-ui/themes";
 import Team1Tab from "./features/team1/Team1Tab";
 import Team2Tab from "./features/team2/Team2Tab";
 import Team3Tab from "./features/team3/Team3Tab";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuth } from "./AuthContext";
 
 const App = () => {
+  const { userLoggedIn } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userLoggedIn) {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <Container size="3" p="4">
       <Flex direction="column" gap="5">
@@ -13,6 +33,13 @@ const App = () => {
             <Text size="2" color="gray">
               One app, three tabs, three teams.
             </Text>
+            <Flex>
+              {!userLoggedIn ? (
+                <Button onClick={() => navigate("/login")}>Login</Button>
+              ) : (
+                <Button onClick={() => navigate("/logout")}>Logout</Button>
+              )}
+            </Flex>
           </header>
         </Flex>
 
