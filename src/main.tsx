@@ -11,7 +11,7 @@ import { AuthProvider } from "./AuthContext.tsx";
 import LogoutPage from "./LogoutPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  <>
     <Theme accentColor="indigo" radius="large">
       <AuthProvider>
         <BrowserRouter>
@@ -24,5 +24,5 @@ createRoot(document.getElementById("root")!).render(
         </BrowserRouter>
       </AuthProvider>
     </Theme>
-  </StrictMode>,
+  </>,
 );

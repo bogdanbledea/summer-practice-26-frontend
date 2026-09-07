@@ -10,14 +10,11 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+import { API_URL } from "./lib/config";
 type Inputs = {
   username: string;
   password: string;
 };
-
-const API_URL = import.meta.env.VITE_API_URL;
-
-console.log(API_URL);
 
 const LoginPage = () => {
   const navigate = useNavigate();

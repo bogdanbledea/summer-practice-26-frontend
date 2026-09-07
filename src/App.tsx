@@ -15,8 +15,12 @@ import { useEffect } from "react";
 import { useAuth } from "./AuthContext";
 
 const App = () => {
-  const { userLoggedIn } = useAuth();
+  const { userLoggedIn, getMe, userProfile } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getMe();
+  }, []);
 
   useEffect(() => {
     if (!userLoggedIn) {
@@ -29,7 +33,13 @@ const App = () => {
       <Flex direction="column" gap="5">
         <Flex direction="column" gap="1" asChild>
           <header>
-            <Heading size="7">Summer Practice</Heading>
+            <Flex>
+              <Flex flexGrow="1">
+                <Heading size="7">Summer Practice</Heading>
+              </Flex>
+              <Flex>Hello {userProfile?.name}</Flex>
+            </Flex>
+
             <Text size="2" color="gray">
               One app, three tabs, three teams.
             </Text>
