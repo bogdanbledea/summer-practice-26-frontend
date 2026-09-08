@@ -59,7 +59,7 @@ const App = () => {
 
         {/* Radix unmounts the tab that is not showing, so each team's state and
             data load fresh every time someone switches to their tab. */}
-        <Tabs.Root defaultValue="team1">
+        <Tabs.Root defaultValue="team3">
           <Tabs.List>
             <Tabs.Trigger value="team1">Tasks</Tabs.Trigger>
             <Tabs.Trigger value="team2">Expenses</Tabs.Trigger>
