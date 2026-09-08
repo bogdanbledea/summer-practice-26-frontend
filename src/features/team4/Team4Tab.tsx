@@ -28,7 +28,7 @@ type ItemToBeUpdated = {
 
 const Team4Tab = () => {
     const [links, setLinks] = useState<LinkItem[]>([]);
-    const { register, handleSubmit, formState, setValue } = useForm<ItemToBeCreated>();
+    const { register, handleSubmit, setValue } = useForm<ItemToBeCreated>();
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editUrl, setEditUrl] = useState<string>("");
     const [editTitle, setEditTitle] = useState<string>("");
