@@ -1,74 +1,25 @@
 import { Button, Card, Flex, TextField } from "@radix-ui/themes";
-import { useEffect, useState } from "react";
-import axiosInstance from "../../lib/axiosInstance";
-import type { AxiosResponse } from "axios";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import type { Inputs, Task } from "../../lib/types";
+import { useAppContext } from "../../AppContext";
 
-type Task = {
-  id: number;
-  title: string;
-  done: boolean;
-  dueDate: string;
-  owner: { username: string; name: string };
-  assignee: { username: string; name: string };
-  mine: boolean;
-  assignedToMe: boolean;
-  createdAt: string;
-};
-
-type Inputs = {
-  title: string;
-};
 const Team1Tab = () => {
   const { register, handleSubmit, formState, setValue } = useForm<Inputs>();
-  const [tasksData, setTasksData] = useState<{
-    items: Task[];
-    total: number;
-    loading: boolean;
-  }>({ items: [], total: 0, loading: true });
+  const { getTasks, tasksData, deleteTask, postTask } = useAppContext();
 
   useEffect(() => {
-    axiosInstance
-      .get("/tasks", {
-        params: {
-          scope: "all",
-        },
-      })
-      .then((res: AxiosResponse) => {
-        setTasksData({ ...res.data, loading: false });
-      });
+    getTasks();
   }, []);
 
   const handleDelete = (id: Task["id"]) => {
-    axiosInstance.delete(`/tasks/${id}`).then(() => {
-      setTasksData((prev) => {
-        const newList = prev.items.filter((item) => item.id !== id);
-        return {
-          ...prev,
-          items: newList,
-        };
-      });
-    });
+    deleteTask(id);
   };
 
-  const onSubmit = (data: Inputs) => {
-    axiosInstance
-      .post("/tasks", {
-        title: data.title,
-      })
-      .then((res) =>
-        setTasksData((prev) => {
-          const task = res.data;
-          return {
-            ...prev,
-            items: [task, ...prev.items],
-          };
-        }),
-      );
+  const onSubmit = async (data: Inputs) => {
+    await postTask(data);
     setValue("title", "");
   };
-
-  console.log(tasksData);
 
   return (
     <Card size="3">
@@ -89,8 +40,8 @@ const Team1Tab = () => {
         </form>
         <Flex mt="3" direction={"column"} gap="2">
           {tasksData.loading && "Loading tasks..."}
-          {tasksData.items.length === 0 &&
-            !tasksData.loading &&
+          {!tasksData.loading &&
+            tasksData.items.length === 0 &&
             "There are no tasks"}
           {tasksData?.items.map((item) => {
             return (

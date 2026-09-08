@@ -15,15 +15,17 @@ import Team5Tab from "./features/team5/Team5Tab";
 import Team6Tab from "./features/team6/Team6Tab";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useAuth } from "./AuthContext";
+import { useAppContext } from "./AppContext";
 
 const App = () => {
-  const { userLoggedIn, getMe, userProfile } = useAuth();
+  const { userLoggedIn, getMe, userProfile } = useAppContext();
   const navigate = useNavigate();
 
   useEffect(() => {
     getMe();
   }, []);
+
+  useEffect(() => {});
 
   useEffect(() => {
     if (!userLoggedIn) {
