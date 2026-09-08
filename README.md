@@ -3,7 +3,7 @@
 React + TypeScript + Vite, with [Radix Themes](https://www.radix-ui.com/themes)
 for components and Tailwind for spacing and layout.
 
-One app, three tabs. Each tab belongs to one team and is built independently.
+One app, six tabs. Each tab belongs to one team and is built independently.
 The backend is already written and deployed — nobody has to touch it. The whole
 practice is on this side: fetch, render, handle the states in between.
 
@@ -12,6 +12,9 @@ practice is on this side: fetch, render, handle the states in between.
 | Tasks         | 1    | `/api/tasks`    |
 | Expenses      | 2    | `/api/expenses` |
 | Message board | 3    | `/api/messages` |
+| Reading list  | 4    | `/api/links`    |
+| Leaderboard   | 5    | `/api/scores`   |
+| Event sign-up | 6    | `/api/events`   |
 
 ## Run it
 
@@ -21,7 +24,7 @@ echo "VITE_API_URL=http://localhost:3000/api" > .env.local
 npm run dev
 ```
 
-Then open http://localhost:5173. You should see three tabs, each holding a
+Then open http://localhost:5173. You should see six tabs, each holding a
 placeholder line. That is the starting point — everything else is ours to build.
 
 `.env.local` is git-ignored, so your settings never end up in a commit. That
@@ -42,6 +45,9 @@ src/
     team1/Team1Tab.tsx     team 1 — tasks
     team2/Team2Tab.tsx     team 2 — expenses
     team3/Team3Tab.tsx     team 3 — message board
+    team4/Team4Tab.tsx     team 4 — reading list
+    team5/Team5Tab.tsx     team 5 — leaderboard
+    team6/Team6Tab.tsx     team 6 — event sign-up
 ```
 
 **Your folder is yours.** Put every component, hook and context your tab needs
@@ -57,9 +63,9 @@ change made in one tab is not visible in another until you switch to it and it
 loads again. That is the trade we are making on purpose: complete independence
 between teams, at the cost of some duplicated fetching.
 
-Radix only renders the tab you are looking at. The other two are unmounted, so
-their state is gone and their effects run again the next time you open them.
-Expect that, and do not fight it.
+Radix only renders the tab you are looking at. The other five are unmounted,
+so their state is gone and their effects run again the next time you open
+them. Expect that, and do not fight it.
 
 ## Working together
 
@@ -90,6 +96,9 @@ needs an `Authorization: Bearer <accessToken>` header.
 | `POST /auth/logout`   | `{ refreshToken }`       | `204` no body                |
 | `GET /me`             | —                        | `200 { id, name, username }` |
 | `GET /users?q=an`     | —                        | `200 { items }` — the picker |
+
+Team 4, 5 and 6's endpoints — `/links`, `/scores`, `/events` — follow the same
+shape and are documented in their own sections below.
 
 A session:
 
@@ -244,6 +253,108 @@ edit and delete buttons only where `mine` is true.
 Then, in devtools, `fetch` a `PATCH` at somebody else's message id. It answers
 `404`. Hiding the button was a **rendering** decision; the server is what
 refused. If you only take one thing from this week, take that one.
+
+### Team 4 — Reading list · `/api/links`
+
+| Method & path       | Body                         |
+| -------------------- | ---------------------------- |
+| `GET /links`        | —                             |
+| `POST /links`       | `{ title, url, tag? }`        |
+| `PATCH /links/:id`  | any of `title`, `url`, `tag`  |
+| `DELETE /links/:id` | —                             |
+
+```json
+{
+  "id": 5,
+  "title": "the turnip vote incident",
+  "url": "https://example.com/turnip",
+  "tag": "css",
+  "createdAt": "2026-08-13T09:12:00.000Z"
+}
+```
+
+Private to you — there is no `mine` field because everything you get back is
+already yours. `url` must start with `http://` or `https://`, or the API
+answers `400`.
+
+**Core:** the list, an add form, delete.
+
+**Extra — filter it live, in the browser.** A search box above the list
+filters the already-fetched array on every keystroke: match against `title`,
+`url` and `tag`, case-insensitive. No request, no debounce — the whole point
+is that this one happens entirely on data you already have. Do it with
+`useMemo` over the fetched array and the search text, the same discipline as
+team 2's grouping: one source of truth, filtered on the way to the screen, not
+a second list kept in sync by hand.
+
+### Team 5 — Leaderboard · `/api/scores`
+
+| Method & path        | Body              |
+| --------------------- | ----------------- |
+| `GET /scores`        | —                  |
+| `POST /scores`       | `{ game, score }`  |
+| `DELETE /scores/:id` | —                  |
+
+```json
+{
+  "id": 12,
+  "game": "typing-race",
+  "score": 87,
+  "player": { "username": "team-beta", "name": "Team Beta" },
+  "mine": false,
+  "createdAt": "2026-08-13T09:12:00.000Z"
+}
+```
+
+Shared, like the message board — everyone's scores, in one list. No `PATCH`:
+a wrong score gets deleted and resubmitted.
+
+**Core:** the list with player and game, an add form, delete your own.
+
+**Extra — make the columns sortable.** Click "Score" or "Date" to sort the
+table by it; click again to flip the direction. Then show **your rank** —
+your position once the list is sorted by score — without a rank field
+anywhere in the API response. Both come from the same place: sort a copy of
+the fetched array in a `useMemo` keyed on the sort column and direction, and
+find your own row's index in it. The server never sorts by score and never
+will; that ordering exists only in this tab.
+
+### Team 6 — Event sign-up · `/api/events`
+
+| Method & path                 | Body                    |
+| ------------------------------- | ----------------------- |
+| `GET /events`                  | —                        |
+| `POST /events`                 | `{ title, capacity }`    |
+| `DELETE /events/:id`           | — (owner only)           |
+| `POST /events/:id/join`        | —                        |
+| `DELETE /events/:id/join`      | —                        |
+
+```json
+{
+  "id": 3,
+  "title": "friday retro drinks",
+  "capacity": 5,
+  "taken": 5,
+  "full": true,
+  "joined": true,
+  "owner": { "username": "team-alpha", "name": "team-alpha" },
+  "mine": true,
+  "createdAt": "2026-08-13T09:12:00.000Z"
+}
+```
+
+**Core:** the list of events with a capacity and a seat count, a form to open
+one, delete your own, and a Join / Leave button driven by `joined` and `full`.
+
+**Extra — optimistic join, with a rollback.** Clicking Join must not wait for
+the network to show you as in: flip `joined` (and bump `taken`) in local state
+the instant the button is pressed, then fire the request. Most of the time the
+server agrees and nothing more happens. Sometimes — because someone else
+clicked at the same moment — it answers **`409 full`**: your optimistic update
+was wrong, and the job is to undo it cleanly, put the real numbers back, and
+tell the person what happened. This is the opposite lesson from team 3's: there
+the server was always right and the UI just deferred to it after the fact;
+here the UI acts first and has to know how to take it back.
 
 ## Commands
 

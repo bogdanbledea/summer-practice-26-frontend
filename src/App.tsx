@@ -10,6 +10,9 @@ import {
 import Team1Tab from "./features/team1/Team1Tab";
 import Team2Tab from "./features/team2/Team2Tab";
 import Team3Tab from "./features/team3/Team3Tab";
+import Team4Tab from "./features/team4/Team4Tab";
+import Team5Tab from "./features/team5/Team5Tab";
+import Team6Tab from "./features/team6/Team6Tab";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuth } from "./AuthContext";
@@ -41,7 +44,7 @@ const App = () => {
             </Flex>
 
             <Text size="2" color="gray">
-              One app, three tabs, three teams.
+              One app, six tabs, six teams.
             </Text>
             <Flex>
               {!userLoggedIn ? (
@@ -60,6 +63,9 @@ const App = () => {
             <Tabs.Trigger value="team1">Tasks</Tabs.Trigger>
             <Tabs.Trigger value="team2">Expenses</Tabs.Trigger>
             <Tabs.Trigger value="team3">Message board</Tabs.Trigger>
+            <Tabs.Trigger value="team4">Reading list</Tabs.Trigger>
+            <Tabs.Trigger value="team5">Leaderboard</Tabs.Trigger>
+            <Tabs.Trigger value="team6">Event sign-up</Tabs.Trigger>
           </Tabs.List>
 
           <Box pt="4">
@@ -71,6 +77,15 @@ const App = () => {
             </Tabs.Content>
             <Tabs.Content value="team3">
               <Team3Tab />
+            </Tabs.Content>
+            <Tabs.Content value="team4">
+              <Team4Tab />
+            </Tabs.Content>
+            <Tabs.Content value="team5">
+              <Team5Tab />
+            </Tabs.Content>
+            <Tabs.Content value="team6">
+              <Team6Tab />
             </Tabs.Content>
           </Box>
         </Tabs.Root>
