@@ -14,7 +14,9 @@ type Task = {
   createdAt: string;
 };
 const Team1Tab = () => {
-  const [tasks, setTasks] = useState<Task[]>();
+  const [tasks] = useState<Task[]>();
+
+  console.log(tasks);
 
   useEffect(() => {
     axiosInstance.get("/tasks");
