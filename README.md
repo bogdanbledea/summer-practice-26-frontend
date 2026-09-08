@@ -4,8 +4,11 @@ React + TypeScript + Vite, with [Radix Themes](https://www.radix-ui.com/themes)
 for components and Tailwind for spacing and layout.
 
 One app, six tabs. Each tab belongs to one team and is built independently.
-The backend is already written and deployed — nobody has to touch it. The whole
-practice is on this side: fetch, render, handle the states in between.
+The backend is already written — it lives in [`backend/`](backend/README.md),
+and you stand up your own copy of it before touching any of this. Nobody
+hands you a URL this time. The whole practice is still on this side: fetch,
+render, handle the states in between; the backend is a five-minute setup, not
+an assignment.
 
 | Tab           | Team | Builds against  |
 | ------------- | ---- | --------------- |
@@ -15,6 +18,25 @@ practice is on this side: fetch, render, handle the states in between.
 | Reading list  | 4    | `/api/links`    |
 | Leaderboard   | 5    | `/api/scores`   |
 | Event sign-up | 6    | `/api/events`   |
+
+## Backend, first
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+# fill in SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, JWT_SECRET — the
+# full walkthrough, including creating the Supabase project and running
+# the three migrations, is in backend/README.md
+npm run dev
+curl localhost:3000/api/health   # -> {"ok":true}
+```
+
+Do this before anything below. There is nothing for the frontend to fetch
+until this answers `{"ok":true}`. The short version above is enough if you
+already know Supabase; if you don't, [backend/README.md](backend/README.md)
+walks through every click, and explains *why* each step exists rather than
+just listing it.
 
 ## Run it
 
@@ -38,6 +60,7 @@ app is deployed. Fine for this week's practice data; never for a real secret.
 ## Layout
 
 ```
+backend/                   the API — see backend/README.md, not this file
 src/
   App.tsx                  the page and the three tabs
   main.tsx                 where React starts
@@ -49,6 +72,10 @@ src/
     team5/Team5Tab.tsx     team 5 — leaderboard
     team6/Team6Tab.tsx     team 6 — event sign-up
 ```
+
+Everything from here down is about `src/` — the frontend. The backend has its
+own README because it is its own concern: you stand it up once and then never
+open the folder again unless something's wrong with it.
 
 **Your folder is yours.** Put every component, hook and context your tab needs
 inside it. Two teams editing the same file is the one thing that turns a merge
@@ -73,7 +100,9 @@ them. Expect that, and do not fight it.
 - Small commits with a message that says what changed and why.
 - Open a pull request and have someone from **another team** read it before it
   is merged. Reading code you did not write is most of the job.
-- Never commit `.env.local`, `node_modules`, or `dist`.
+- Never commit `.env.local`, `.env`, `node_modules`, or `dist` — frontend or
+  backend. `backend/.env` holds your Supabase service_role key; if that ends
+  up in a commit, rotate it in Supabase and generate a new one.
 
 ```bash
 git checkout -b feat/team-1-empty-state
@@ -86,7 +115,10 @@ git push -u origin feat/team-1-empty-state
 ## The API
 
 Base URL is in `.env.local` as `VITE_API_URL`. Every request outside `/auth/*`
-needs an `Authorization: Bearer <accessToken>` header.
+needs an `Authorization: Bearer <accessToken>` header. This section is the
+same contract, trimmed to what you need while building a tab — the full
+version, including how the server enforces every rule below rather than just
+stating it, is in [backend/README.md](backend/README.md).
 
 | Method & path         | Body                     | Returns                      |
 | --------------------- | ------------------------ | ---------------------------- |
