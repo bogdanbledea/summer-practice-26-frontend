@@ -6,23 +6,23 @@ import { useForm } from "react-hook-form";
 
 
 type LinkItem = {
-    id: number,
-    title: string,
-    url: string,
-    tag: string,
-    createdAt: string
+    id: number;
+    title: string;
+    url: string;
+    tag: string;
+    createdAt: string;
 };
 
 type ItemToBeCreated = {
-    title: string,
-    url: string,
-    tag?: string
+    title: string;
+    url: string;
+    tag?: string;
 };
 
 type ItemToBeUpdated = {
-    title?: string,
-    url?: string,
-    tag?: string
+    title?: string;
+    url?: string;
+    tag?: string;
 };
 
 
