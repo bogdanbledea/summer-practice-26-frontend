@@ -41,7 +41,7 @@ const App = () => {
           <header>
             <Flex>
               <Flex flexGrow="1">
-                <Heading size="7">Summer Practice</Heading>
+                <Heading size="7">Summer Practice was extremely great</Heading>
               </Flex>
               <Flex>Hello {userProfile?.name}</Flex>
             </Flex>
@@ -66,7 +66,7 @@ const App = () => {
             <Tabs.Trigger value="team1">Tasks</Tabs.Trigger>
             <Tabs.Trigger value="team2">Expenses</Tabs.Trigger>
             <Tabs.Trigger value="team3">Message board</Tabs.Trigger>
-            <Tabs.Trigger value='team7'>Messages 2</Tabs.Trigger> 
+            <Tabs.Trigger value="team7">Messages 2</Tabs.Trigger>
             <Tabs.Trigger value="team4">Reading list</Tabs.Trigger>
             <Tabs.Trigger value="team5">Leaderboard</Tabs.Trigger>
             <Tabs.Trigger value="team6">Event sign-up</Tabs.Trigger>
@@ -82,7 +82,7 @@ const App = () => {
             <Tabs.Content value="team3">
               <Team3Tab />
             </Tabs.Content>
-             <Tabs.Content value="team7">
+            <Tabs.Content value="team7">
               <Team7Tab />
             </Tabs.Content>
             <Tabs.Content value="team4">
