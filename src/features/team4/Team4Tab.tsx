@@ -33,14 +33,17 @@ const Team4Tab = () => {
     const [editUrl, setEditUrl] = useState<string>("");
     const [editTitle, setEditTitle] = useState<string>("");
 
-    const addLink = (title: string, url: string, tag?: string) => {
-        axiosInstance.post(("/links"), { title, url, tag }).then((res: AxiosResponse) => {
-            setLinks((prev) => [res.data, ...prev,]);
-        });
-        setValue("title", "");
-        setValue("url", "");
-        setValue("tag", "");
-    }
+    const addLink = async (title: string, url: string, tag?: string) => {
+        try {
+            const res: AxiosResponse<LinkItem> = await axiosInstance.post("/links", { title, url, tag });
+            setLinks((prev) => [res.data, ...prev]);
+            setValue("title", "");
+            setValue("url", "");
+            setValue("tag", "");
+        } catch (error) {
+            console.error("Failed to add link", error);
+        }
+    };
     const updateLink = (id: number, data: ItemToBeUpdated) => {
         axiosInstance
             .patch(`/links/${id}`, data)
