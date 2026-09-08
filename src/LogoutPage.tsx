@@ -1,12 +1,12 @@
 import { Flex } from "@radix-ui/themes";
 import { useEffect } from "react";
-import { useAuth } from "./AuthContext";
+import { useAppContext } from "./AppContext";
 import { useNavigate } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const LogoutPage = () => {
-  const { userLoggedIn, setUserLoggedIn } = useAuth();
+  const { userLoggedIn, setUserLoggedIn } = useAppContext();
   console.log(userLoggedIn);
   const navigate = useNavigate();
 

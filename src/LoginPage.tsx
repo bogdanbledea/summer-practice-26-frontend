@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import { useAppContext } from "./AppContext";
 import { API_URL } from "./lib/config";
 type Inputs = {
   username: string;
@@ -18,7 +18,7 @@ type Inputs = {
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { userLoggedIn, setUserLoggedIn } = useAuth();
+  const { userLoggedIn, setUserLoggedIn } = useAppContext();
   const { register, handleSubmit, formState } = useForm<Inputs>();
   const [errorMessage, setErrorMessage] = useState<string>("");
 

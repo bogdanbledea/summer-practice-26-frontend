@@ -8,7 +8,7 @@ import {
 } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuth } from "./AuthContext";
+import { useAppContext } from "./AppContext";
 import { useNavigate } from "react-router-dom";
 type Inputs = {
   username: string;
@@ -23,7 +23,7 @@ const RegisterPage = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const { register, handleSubmit, formState } = useForm<Inputs>();
   const navigate = useNavigate();
-  const { userLoggedIn } = useAuth();
+  const { userLoggedIn } = useAppContext();
 
   useEffect(() => {
     if (userLoggedIn) {

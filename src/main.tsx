@@ -7,7 +7,7 @@ import App from "./App.tsx";
 import LoginPage from "./LoginPage.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import RegisterPage from "./RegisterPage.tsx";
-import { AuthProvider } from "./AuthContext.tsx";
+import { AuthProvider } from "./AppContext.tsx";
 import LogoutPage from "./LogoutPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
